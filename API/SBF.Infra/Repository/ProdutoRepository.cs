@@ -7,5 +7,8 @@ namespace SBF.Infra.Repository
     public class ProdutoRepository : Repository<Produto>, IProdutoRepository
     {
         public ProdutoRepository(Context dbContext) : base(dbContext)
+        {
+
+        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using SBF.Domain.Interfaces.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+using SBF.Domain.Interfaces.Repository;
 using SBF.Infra.Data;
+using System;
 using System.Linq;
 
 namespace SBF.Infra.Repository

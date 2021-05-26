@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SBF.Domain.Entity;
+using SBF.Infra.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Text;
