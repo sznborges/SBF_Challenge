@@ -15,6 +15,7 @@ namespace SBF.Infra.Data
         }
 
         public DbSet<Produto> Produto { get; set; }
+        public DbSet<Moeda> Moeda { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

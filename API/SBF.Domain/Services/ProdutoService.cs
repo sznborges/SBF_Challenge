@@ -31,11 +31,11 @@ namespace SBF.Domain.Services
         public void Update(Produto produto)
         {
             if (produto == null)
-                throw new ProdutoNaoEncontradoException();
+                throw new ProductNotFoundException();
 
             var produtoDb = this._produtoRepository.GetById(produto.Id);
             if (produtoDb == null)
-                throw new ProdutoNaoEncontradoException();
+                throw new ProductNotFoundException();
 
             produtoDb.Descricao = produto.Descricao;
             produto.Preco = produto.Preco;

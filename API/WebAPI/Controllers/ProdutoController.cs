@@ -15,14 +15,17 @@ namespace WebAPI.Controllers
     {
 
         private readonly IProdutoService _produtoService;
-        private readonly IConversorMoedaService _conversorMoedaService;
+        private readonly IMoedaService _moedaService;
+        private readonly ICurrencyConverterService _currencyConverterService;
 
         public ProdutoController(IProdutoService produtoService,
-            IConversorMoedaService conversorMoedaService
+            IMoedaService moedaService,
+            ICurrencyConverterService currencyConverterService
             )
         {
             _produtoService = produtoService;
-            _conversorMoedaService = conversorMoedaService;
+            _moedaService = moedaService;
+            _currencyConverterService = currencyConverterService;
 
         }
 
@@ -35,35 +38,24 @@ namespace WebAPI.Controllers
 
         private async Task<ProdutosListagemViewModel> ToViewModel(Produto produto)
         {
-            List<PrecoOutrasMoedasViewModel> precosOutrasMoedas = new List<PrecoOutrasMoedasViewModel>();
-            precosOutrasMoedas.Add(new PrecoOutrasMoedasViewModel { Moeda = "EUR", Preco = await ConverterValor(EnumMoeda.EUR, produto.Preco) });
-            precosOutrasMoedas.Add(new PrecoOutrasMoedasViewModel { Moeda = "USD", Preco = await ConverterValor(EnumMoeda.USD, produto.Preco) });
-            precosOutrasMoedas.Add(new PrecoOutrasMoedasViewModel { Moeda = "INR", Preco = await ConverterValor(EnumMoeda.INR, produto.Preco) });
-
-
-
+            List<PrecoEmOutrasMoedasViewModel> listaPrecosEmOutrasMoedas = new List<PrecoEmOutrasMoedasViewModel>();
+            var moedas = _moedaService.Listar();
+            foreach (var item in moedas)
+            {
+                listaPrecosEmOutrasMoedas.Add(new PrecoEmOutrasMoedasViewModel { Moeda = item.Sigla, Preco = await GetValorProdutoMoeda(item.Sigla, produto.Preco) });
+            }
+            
             return new ProdutosListagemViewModel
             {
                 Descricao = produto.Descricao,
-                PrecoReal = produto.Preco,
-                PrecoOutrasMoedas = precosOutrasMoedas.ToArray()
+                PrecoEmReal = produto.Preco,
+                PrecosEmOutrasMoedas = listaPrecosEmOutrasMoedas.ToArray()
             };
         }
 
-        private async Task<double> ConverterValor(EnumMoeda moeda, double preco)
+        private async Task<double> GetValorProdutoMoeda(string sigla, double preco)
         {
-            switch (moeda)
-            {
-                case EnumMoeda.USD:
-                    return preco * _conversorMoedaService.GetConversorMoeda("BRL", "USD");
-                case EnumMoeda.EUR:
-                    return preco * _conversorMoedaService.GetConversorMoeda("BRL", "EUR");
-                // return await 
-                case EnumMoeda.INR:
-                  return preco *  _conversorMoedaService.GetConversorMoeda("BRL", "INR");
-                default:
-                    return 0;
-            }
+            return preco * _currencyConverterService.GetCurrencyValue(sigla);           
         }
 
         [HttpPost]
@@ -94,19 +86,6 @@ namespace WebAPI.Controllers
             _produtoService.Update(produto);
 
             return Ok("Cadastro alterado com sucesso.");
-        }
-
-        //[HttpGet]
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    var rng = new Random();
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = rng.Next(-20, 55),
-        //        Summary = Summaries[rng.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
+        }       
     }
 }

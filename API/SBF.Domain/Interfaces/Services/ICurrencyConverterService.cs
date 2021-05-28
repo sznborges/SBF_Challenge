@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace SBF.Domain.Interfaces.Services
 {
-    public interface IConversorMoedaService
+    public interface ICurrencyConverterService
     {
-        double GetConversorMoeda(string de, string para);
+        double GetCurrencyValue(string targetCurrencyAbbreviation);
     }
 }

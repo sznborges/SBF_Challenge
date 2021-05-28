@@ -1,37 +1,32 @@
-﻿using System;
-using Flurl.Http;
+﻿using Flurl.Http;
 using Flurl.Http.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
 using SBF.Domain.Interfaces.Services;
-using SBF.Domain.Services.Response;
-using System.Dynamic;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace SBF.Domain.Services
 {
-    public class ConversorMoedaService : IConversorMoedaService
+    public class CurrencyConverterService : ICurrencyConverterService
     {
         private readonly IFlurlClient _flurlClient;
         private const string _URL = "https://free.currconv.com/api/v7/convert?";
         private const string _KEY = "ade612e74c082d0005d4";
+        private const string _ORIGIN = "BRL";
 
-        public ConversorMoedaService(IFlurlClientFactory flurlClientFac)
+        public CurrencyConverterService(IFlurlClientFactory flurlClientFac)
         {
             this._flurlClient = flurlClientFac.Get(_URL);
         }
-        public double GetConversorMoeda(string de, string para)
+        public double GetCurrencyValue(string targetCurrencyAbbreviation)
         {
-
-            return Converter(de, para).Result;
+            return Convert(targetCurrencyAbbreviation).Result;
         }
 
-        private async Task<double> Converter(string de, string para)
+        private async Task<double> Convert(string targetCurrencyAbbreviation)
         {
             var retorno = await _flurlClient
                          .Request()
-                         .SetQueryParams(new { apiKey = _KEY, compact = "ultra", q = de + "_" + para })
+                         .SetQueryParams(new { apiKey = _KEY, compact = "ultra", q = _ORIGIN + "_" + targetCurrencyAbbreviation })
                          .GetAsync()
                          .ReceiveJson();
 

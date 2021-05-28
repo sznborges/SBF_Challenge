@@ -30,12 +30,8 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
             services.AddDbContext<Context>(options =>
                  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-
 
             services.AddMvc();
             RegisterServices(services);
@@ -72,11 +68,7 @@ namespace WebAPI
         private static void RegisterServices(IServiceCollection services)
         {
             // Adding dependencies from another layers (isolated from Presentation)
-            NativeInjectorBootStrapper.RegisterServices(services);
-
-            //FluentValidation
-            //ervices.AddTransient<IValidator<MotoristaCadastroPostRequest>, MotoristaCadastroPostValidator>();
-            //ervices.AddTransient<IValidator<MotoristaCadastroPutRequest>, MotoristaCadastroPutValidator>();
+            NativeInjectorBootStrapper.RegisterServices(services);            
         }
     }
 }

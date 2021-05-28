@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SBF.Domain.Entity
+﻿namespace SBF.Domain.Entity
 {
     public class Produto
     {

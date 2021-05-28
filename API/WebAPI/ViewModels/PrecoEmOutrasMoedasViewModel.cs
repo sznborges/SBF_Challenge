@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebAPI.ViewModels
 {
-    public class PrecoOutrasMoedasViewModel
+    public class PrecoEmOutrasMoedasViewModel
     {
         [JsonProperty("Moeda")]
         public string Moeda { get; set; }

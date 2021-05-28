@@ -4,9 +4,9 @@ using System.Text;
 
 namespace SBF.Domain.Exceptions
 {
-    public class ProdutoNaoEncontradoException : Exception
+    public class ProductNotFoundException : Exception
     {
-        public ProdutoNaoEncontradoException() : base("Produto não encontrado")
+        public ProductNotFoundException() : base("Produto não encontrado")
         {
 
         }

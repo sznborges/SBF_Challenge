@@ -14,10 +14,10 @@ namespace WebAPI.ViewModels
         [JsonProperty("Descricao")]
         public string Descricao { get; set; }
 
-        [JsonProperty("PrecoReal")]
-        public double PrecoReal { get; set; }
+        [JsonProperty("PrecoEmReal")]
+        public double PrecoEmReal { get; set; }
 
-        [JsonProperty("PrecoOutrasMoedas")]
-        public PrecoOutrasMoedasViewModel[] PrecoOutrasMoedas { get; set; }
+        [JsonProperty("PrecoEmOutrasMoedas")]
+        public PrecoEmOutrasMoedasViewModel[] PrecosEmOutrasMoedas { get; set; }
     }
 }

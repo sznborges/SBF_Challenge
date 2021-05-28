@@ -14,10 +14,12 @@ namespace SBF.IoC
         {
             //Application Services
             services.AddScoped<IProdutoService, ProdutoService>();
-            services.AddScoped<IConversorMoedaService, ConversorMoedaService>();
+            services.AddScoped<IMoedaService, MoedaService>();
+            services.AddScoped<ICurrencyConverterService, CurrencyConverterService>();
 
             //Infra
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<IMoedaRepository, MoedaRepository>();
             services.AddScoped<Context>();
 
             //Flurl
