@@ -17,6 +17,11 @@ namespace SBF.Domain.Services
             this._produtoRepository = produtoRepository;
         }
 
+        public Produto Get(int id)
+        {
+            return _produtoRepository.GetById(id);
+        }
+
         public void Add(Produto produto)
         {
             _produtoRepository.Add(produto);

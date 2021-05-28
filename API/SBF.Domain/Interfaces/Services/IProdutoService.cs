@@ -7,7 +7,8 @@ namespace SBF.Domain.Interfaces.Services
 {
     public interface IProdutoService
     {
+        Produto Get(int id);
         void Add(Produto produto);
-        void Update(Produto produto);
+        void Update(Produto produto);  
     }
 }
