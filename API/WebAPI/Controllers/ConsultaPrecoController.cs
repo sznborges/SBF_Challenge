@@ -11,14 +11,14 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProdutoController : ControllerBase
+    public class ConsultaPrecoController : ControllerBase
     {
 
         private readonly IProdutoService _produtoService;
         private readonly IMoedaService _moedaService;
         private readonly ICurrencyConverterService _currencyConverterService;
 
-        public ProdutoController(IProdutoService produtoService,
+        public ConsultaPrecoController(IProdutoService produtoService,
             IMoedaService moedaService,
             ICurrencyConverterService currencyConverterService
             )
@@ -30,28 +30,22 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public IActionResult Get(double preco)
         {
-            var produto = _produtoService.Get(id);
-            return Ok(ToViewModel(produto));
+            return Ok(ToViewModel(preco));
         }
 
-        private async Task<ProdutosListagemViewModel> ToViewModel(Produto produto)
+        private async Task<IList<PrecoEmOutrasMoedasViewModel>> ToViewModel(double precoOriginal)
         {
             List<PrecoEmOutrasMoedasViewModel> listaPrecosEmOutrasMoedas = new List<PrecoEmOutrasMoedasViewModel>();
             var moedas = _moedaService.Listar();
             foreach (var item in moedas)
             {
-                listaPrecosEmOutrasMoedas.Add(new PrecoEmOutrasMoedasViewModel { Moeda = item.Sigla?.Trim(), Preco = await GetValorProdutoMoeda(item.Sigla, produto.Preco) });
+                listaPrecosEmOutrasMoedas.Add(new PrecoEmOutrasMoedasViewModel { Moeda = item.Sigla?.Trim(), Preco = await GetValorProdutoMoeda(item.Sigla, precoOriginal) });
             }
+
+            return listaPrecosEmOutrasMoedas;
             
-            return new ProdutosListagemViewModel
-            {
-                Id= produto.Id,
-                Descricao = produto.Descricao,
-                PrecoEmReal = produto.Preco,
-                PrecosEmOutrasMoedas = listaPrecosEmOutrasMoedas.ToArray()
-            };
         }
 
         private async Task<double> GetValorProdutoMoeda(string sigla, double preco)
