@@ -39,8 +39,7 @@ namespace SBF.Domain.Services
             foreach (var item in retorno)
             {
                 CultureInfo cultureinf = targetCurrencyAbbreviation == "USD" ? new CultureInfo("en-US") : targetCurrencyAbbreviation == "EUR" ? new CultureInfo("es-ES") : new CultureInfo("es-IN");
-                valor = Convert.ToDouble(item.Value.ToString("F", cultureinf));
-
+                valor = Convert.ToDouble(item.Value.ToString("N2", cultureinf));               
             }
             return valor;
         }
